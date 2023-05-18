@@ -13,3 +13,12 @@ class RoomModel(models.Model):
     def __str__(self):
         return f"{self.room_number} {self.category}"
 
+
+class ClientRegisterModel(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=50)
+
+class ClientLoginModel(models.Model):
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=50)
