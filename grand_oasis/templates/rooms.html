@@ -314,8 +314,10 @@
                     data-bs-toggle="modal"
                     data-bs-target="#bookRoomModal"
                     {% if not room.is_available %} disabled {% endif %}
-                  >
-                  Book Now
+                    >
+                    
+                    {% if room.is_available %} Book Now {% endif %}
+                    {% if not room.is_available %} Occupied {% endif %}
                 </button>
 
                 </div>
@@ -484,11 +486,11 @@
                 {% endfor %}
               </select>
               <label for="checkin">Check In: 
-                <input name="checkin" id="checkin" type="date" />
+                <input name="checkin" id="checkin" type="date" required />
               </label><br />
 
               <label for="checkout">Check Out: 
-                <input name="checkout" id="checkout" type="date" />
+                <input name="checkout" id="checkout" type="date" required />
               </label>
 
               <p id="duration">Duration: 0 days</p>

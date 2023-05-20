@@ -26,10 +26,12 @@ class ClientLoginModel(models.Model):
 
 class ReservationModel(models.Model):
     # client= models.ForeignKey(ClientModel, null=True, on_delete= models.SET_NULL)
-    room= models.ForeignKey(RoomModel, null=True, on_delete= models.SET_NULL)
+    room= models.ForeignKey(RoomModel, on_delete=models.CASCADE)
     date_booked = models.DateTimeField(auto_now_add=True)
     checkin = models.DateField()
     checkout = models.DateField()
+    total_price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
 
-    # def __str__(self):
-    #     return f"{self.room.room_number}"
+
+    def __str__(self):
+        return f"Room {self.room.room_number} on floor {self.room.floor_number} booked by"

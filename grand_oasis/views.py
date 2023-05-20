@@ -45,7 +45,18 @@ def rooms(request):
         form = ReservationForm(request.POST)
         if form.is_valid():
             print(form)
+
+            # set the room to unavailable
+            roomID = request.POST['room']
+            currentRoom = RoomModel.objects.get(id=roomID)
+            currentRoom.is_available = False
+
+            # save reservation
             form.save()
+            
+            # update the room
+            currentRoom.save()
+            
             return redirect('rooms')
         else:
             print("rf")

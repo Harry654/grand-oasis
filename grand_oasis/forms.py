@@ -15,4 +15,4 @@ class LoginForm (ModelForm):
 class ReservationForm (ModelForm):
     class Meta:
         model = ReservationModel  
-        fields = "__all__"
+        fields = ["room", "checkin", "checkout"]
