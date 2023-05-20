@@ -16,6 +16,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'register.html', context)
 
+
 def login(request):
     error = ''
     if request.method == 'POST':
@@ -28,7 +29,7 @@ def login(request):
     else:
         form = LoginForm()
 
-    context = {'form': form, 'error': error }
+    context = {'form': form, 'error': error}
     return render(request, 'login.html', context)
 
 
@@ -37,7 +38,21 @@ def index(request):
 
 
 def rooms(request):
+    if request.method == 'POST':
+        # print(request.POST['checkin'])
+        # print(request.POST['checkout'])
+        # print(request.POST['room'])
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            print(form)
+            form.save()
+            return redirect('rooms')
+        else:
+            print("rf")
+    else:
+        form = ReservationForm()
+
     floor1 = RoomModel.objects.filter(floor_number=1)
     floor2 = RoomModel.objects.filter(floor_number=2)
     floor3 = RoomModel.objects.filter(floor_number=3)
-    return render(request, 'rooms.html', {"floor1": floor1, "floor2": floor2, "floor3": floor3})
+    return render(request, 'rooms.html', {"floors": [floor1, floor2, floor3], 'form': form, 'rooms': RoomModel.objects.all()})

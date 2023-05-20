@@ -12,9 +12,10 @@ class RoomModel(models.Model):
 
     def __str__(self):
         return f"{self.room_number} {self.category}"
+    
 
 
-class ClientRegisterModel(models.Model):
+class ClientModel(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=50)
@@ -22,3 +23,13 @@ class ClientRegisterModel(models.Model):
 class ClientLoginModel(models.Model):
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=50)
+
+class ReservationModel(models.Model):
+    # client= models.ForeignKey(ClientModel, null=True, on_delete= models.SET_NULL)
+    room= models.ForeignKey(RoomModel, null=True, on_delete= models.SET_NULL)
+    date_booked = models.DateTimeField(auto_now_add=True)
+    checkin = models.DateField()
+    checkout = models.DateField()
+
+    # def __str__(self):
+    #     return f"{self.room.room_number}"
