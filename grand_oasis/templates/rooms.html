@@ -135,7 +135,7 @@
       <!-- Page Header Start -->
       <div
         class="container-fluid page-header mb-5 p-0"
-        style="background-image: url({% static 'img/carousel-1.jpg' %})"
+        style="background-image: url('/static/img/carousel-1.jpg')"
       >
         <div class="container-fluid page-header-inner py-5">
           <div class="container text-center pb-5">
@@ -218,7 +218,7 @@
       </div>
       <!-- Booking End -->
 
-      <!-- Room Start -->
+      <!-- Floor Start -->
       <div class="container-xxl py-5">
         <div class="container">
           <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -229,112 +229,263 @@
               Explore Our <span class="text-primary text-uppercase">Rooms</span>
             </h1>
           </div>
+          {% for floor in floors %}
           
-        {% for floor in floors %}
-        <div class="row g-4 mb-5">
-          <h2>Floor {{ forloop.counter }}</h2>
-          {% for room in floor %}
-          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="room-item shadow rounded overflow-hidden">
-              <div class="position-relative">
-                  {% if room.category == 'Junior Suite' %} 
-                  <img
-                  class="img-fluid"
-                  src="{% static 'img/room-1.jpg' %}"
-                  alt=""
-                  />
-                  {% endif %}
-                  {% if room.category == 'Executive Suite' %} 
-                  <img
-                  class="img-fluid"
-                  src="{% static 'img/room-2.jpg' %}"
-                  alt=""
-                  />
-                  {% endif %}
-                  {% if room.category == 'Super Deluxe' %} 
-                  <img
-                  class="img-fluid"
-                  src="{% static 'img/room-3.jpg' %}"
-                  alt=""
-                  />
-                  {% endif %}
-                <small
-                  class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
-                  >${{ room.price_per_night }}/Night</small
-                >
-                <small
-                  class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
-                  >{{ room.room_number }}</small
-                >
-              </div>
-              <div class="p-4 mt-2">
-                <div class="d-flex justify-content-between mb-3">
-                  <h5 class="mb-0">{{ room.category }}</h5>
-                  <div class="ps-2">
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
+            <!-- Room Start -->
+            <div class="row g-4 mb-5">
+              <h2>Floor {{ forloop.counter }}</h2>
+              {% for room in floor %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="room-item shadow rounded overflow-hidden">
+                  <div class="position-relative">
+                      {% if room.category == 'Junior Suite' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-1.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+
+                      {% if room.category == 'Executive Suite' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-2.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+
+                      {% if room.category == 'Super Deluxe' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-3.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+                    <small
+                      class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
+                      >${{ room.price_per_night }}/Night</small
+                    >
+                    <small
+                      class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
+                      >{{ room.room_number }}</small
+                    >
+                  </div>
+                  <div class="p-4 mt-2">
+                    <div class="d-flex justify-content-between mb-3">
+                      <h5 class="mb-0">{{ room.category }}</h5>
+                      <div class="ps-2">
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                      </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                      <small class="border-end me-3 pe-3"
+                        ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
+                      >
+                      <small class="border-end me-3 pe-3"
+                        ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
+                      >
+                      <small
+                        ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
+                      >
+                    </div>
+                    <p class="text-body mb-3">
+                      {{ room.description }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                      <!-- {% if room.category == 'Junior Suite' %} 
+                      {% endif %} -->
+                      <a class="btn btn-sm btn-primary rounded py-2 px-4" 
+                        href=""
+                        data-bs-toggle="modal"
+                        data-bs-target="#detailModal{{ room.id }}"
+                        >View Detail</a
+                      >
+                      {% if user.is_authenticated %} 
+                      <a
+                        id="book_now_btn"
+                        class="btn btn-sm btn-dark rounded py-2 px-4"
+                        onclick="setRoom()"
+                        room_id="{{room.id}}"
+                        price_per_night="{{room.price_per_night}}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#bookRoomModal{{ room.id }}"
+                        {% if not room.is_available %} disabled {% endif %}
+                      >
+                        
+                        {% if room.is_available %} Book Now {% endif %}
+                        {% if not room.is_available %} Occupied {% endif %}
+                    </a>
+                      {% else %}
+                      <a
+                        class="btn btn-sm btn-dark rounded py-2 px-4"
+                        href="/login"
+                        {% if not room.is_available %} disabled {% endif %}
+                      >
+                        
+                        {% if room.is_available %} Book Now {% endif %}
+                        {% if not room.is_available %} Occupied {% endif %}
+                    </a>
+                      {% endif %}
+                      
+
+                    </div>
                   </div>
                 </div>
-                <div class="d-flex mb-3">
-                  <small class="border-end me-3 pe-3"
-                    ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
-                  >
-                  <small class="border-end me-3 pe-3"
-                    ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
-                  >
-                  <small
-                    ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
-                  >
-                </div>
-                <p class="text-body mb-3">
-                  {{ room.description }}
-                </p>
-                <div class="d-flex justify-content-between">
-                  <!-- {% if room.category == 'Junior Suite' %} 
-                  {% endif %} -->
-                  <a class="btn btn-sm btn-primary rounded py-2 px-4" href=""
-                    room_category="{{room.category}}"
-                    data-bs-toggle="modal"
-                    data-bs-target="#detailModal"
-                    onclick="setDetails()"
-                    >View Detail</a
-                  >
-                  <button
-                    id="book_now_btn"
-                    class="btn btn-sm btn-dark rounded py-2 px-4"
-                    href=""
-                    onclick="setRoom()"
-                    room_id="{{room.id}}"
-                    room_category="{{room.category}}"
-                    room_number="{{room.room_number}}"
-                    price_per_night="{{room.price_per_night}}"
-                    data-bs-toggle="modal"
-                    data-bs-target="#bookRoomModal"
-                    {% if not room.is_available %} disabled {% endif %}
-                    >
+              
+
+              <!-- Booking modal start -->
+              <div
+              class="modal fade w-100"
+              id="bookRoomModal{{ room.id }}"
+              tabindex="-1"
+              aria-labelledby="bookRoomModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="bookRoomModalLabel">Book Room</h1>
+                    <button
+                    type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  
+                  <form id="myForm{{ room.id }}" action="" method="POST">
+                    {% csrf_token %}
+                  <div class="modal-body">
+                    <p id="room_number">Room Number: {{ room.room_number }}</p>
+                    <p id="room_type">Room Type: {{ room.category }}</p>
                     
-                    {% if room.is_available %} Book Now {% endif %}
-                    {% if not room.is_available %} Occupied {% endif %}
-                </button>
+                      
+                      <select name="room" required id="room{{ room.id }}" hidden>
+                        {% for roomOption in rooms %}
+                          <option 
+                            value="{{ roomOption.id }}" 
+                            {% if roomOption.id == room.id %} selected {% endif %}
+                          ></option>
+                        {% endfor %}
+                      </select>
+                      <label for="checkin">Check In: 
+                        <input name="checkin" id="checkin" class="checkin" type="date" required />
+                      </label><br />
+        
+                      <label for="checkout">Check Out: 
+                        <input name="checkout" id="checkout" class="checkout" type="date" required />
+                      </label>
+        
+                      <p id="duration{{ room.id }}" class="duration">Duration: 0 days</p>
+                      <p id="amount{{ room.id }}" class="amount">Amount: $0</p>
+                      
+                      <!-- <h1 class="modal-title fs-5" id="juniorSuiteModalLabel">Additional Services</h1>
+                      <div class="row">
+                      <p class="col-5">Airport transit</p>
+                      <button
+                      class="btn btn-sm btn-primary rounded py-2 px-4 col-3 ms-auto me-3"
+                    >
+                      Add
+                    </button> -->
+                    
+                  </div>
+                  
+                  
+                  
+                  <div class="modal-footer">
+                    <button class="btn btn-primary">Book Room</button>
+                  </div>
+                </form>
 
                 </div>
               </div>
+              </div>
+              <!-- Booking modal end -->
+
+              <!-- Detail modal start -->
+                <div
+                class="modal fade w-100"
+                id="detailModal{{ room.id }}"
+                tabindex="-1"
+                aria-labelledby="detailModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="detailModalLabel">Junior Suite</h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <div class="modal-body">
+                      {% if room.category == 'Junior Suite' %}
+                      <img
+                        id="detailsImg"
+                        class="img-fluid"
+                        src="{% static 'img/room-1.jpg' %}"
+                        alt=""
+                      />
+                    <p id="detailsDesc">Step into our comfortable and affordable basic hotel room, designed with your convenience in mind. Unwind in a cozy and inviting atmosphere, complete with a well-appointed en-suite bathroom and a snug bed that guarantees a restful night's sleep. Stay productive with a dedicated workspace, ideal for catching up on work or planning your itinerary. Whether you're a budget-conscious traveler or simply seeking simplicity, our basic hotel room provides all the essentials for a pleasant stay without compromising on comfort.</p>
+                    <p><strong id="detailsPrice">$120 / Night</strong></p>
+                    {% endif %}
+                    
+                    {% if room.category == 'Executive Suite' %}
+                    <img
+                    id="detailsImg"
+                    class="img-fluid"
+                    src="{% static 'img/room-2.jpg' %}"
+                    alt=""
+                    />
+                    <p id="detailsDesc">Indulge in a delightful experience in our standard hotel room, where modern elegance and comfort seamlessly come together. Immerse yourself in the tastefully designed space, featuring stylish décor and thoughtful amenities. Drift into tranquility on the comfortable bed, and refresh in the well-appointed bathroom that offers both functionality and style. Whether you're traveling for business or leisure, our standard room provides the perfect retreat to relax and recharge after a day of exploring. Embrace the balance of comfort, convenience, and affordability in our inviting standard hotel room.</p>
+                    <p><strong id="detailsPrice">$300 / Night</strong></p>
+                    {% endif %}
+                    
+                    {% if room.category == 'Super Deluxe' %}
+                    <img
+                    id="detailsImg"
+                    class="img-fluid"
+                    src="{% static 'img/room-3.jpg' %}"
+                    alt=""
+                    />
+                    <p id="detailsDesc">Experience the epitome of luxury and sophistication in our executive hotel room. From the moment you step inside, you'll be enveloped in an ambiance of elegance and refinement. Indulge in the spaciousness of the room, carefully adorned with upscale furnishings and captivating décor. Sink into the plush king-size bed and revel in its comfort. The upgraded bathroom offers a touch of opulence, featuring premium fixtures and luxurious amenities. As an executive guest, you'll enjoy exclusive access to our executive lounge, where personalized services and complimentary perks await. Whether you're traveling for business or seeking a luxurious retreat, our executive room exceeds expectations, offering an extraordinary stay tailored to the discerning traveler.</p>
+                    <p><strong id="detailsPrice">$500 / Night</strong></p>
+                    
+                      {% endif %}
+                      
+                      {% if not room.is_available %}
+                        {% for reservation in reservations %}
+                          {% if reservation.room.id == room.id %}
+                            <p>This room is occupied from <strong>{{ reservation.checkin }}</strong> to <strong>{{ reservation.checkout }}</strong></p>
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+
+                    </div>
+
+                  </div>
+                </div>
+                </div>
+              <!-- Detail modal end -->
+
+
+                </div>
+              {% endfor %}
             </div>
-          </div>
+            <!-- Room End -->
+            
           {% endfor %}
         </div>
-        {% endfor %}
-
-
-            
-          </div>
-        </div>
       </div>
-      <!-- Room End -->
-
+      <!-- Floor End -->
 
       <!-- Footer Start -->
       <div
@@ -454,116 +605,8 @@
         ><i class="bi bi-arrow-up"></i
       ></a>
       
-      <!-- Booking modals start -->
-      <div
-      class="modal fade w-100"
-      id="bookRoomModal"
-      tabindex="-1"
-      aria-labelledby="bookRoomModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="bookRoomModalLabel">Book Room</h1>
-            <button
-            type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <p id="room_number"></p>
-            <p id="room_type"></p>
-            <form id="myForm" action="" method="POST">
-              {% csrf_token %}
-
-              <select name="room" required id="room" hidden>
-                {% for room in rooms %}
-                  <option value="{{ room.id }}"></option>
-                {% endfor %}
-              </select>
-              <label for="checkin">Check In: 
-                <input name="checkin" id="checkin" type="date" required />
-              </label><br />
-
-              <label for="checkout">Check Out: 
-                <input name="checkout" id="checkout" type="date" required />
-              </label>
-
-              <p id="duration">Duration: 0 days</p>
-              <p id="amount">Amount: $0</p>
-              
-              <h1 class="modal-title fs-5" id="juniorSuiteModalLabel">Additional Services</h1>
-              <div class="row">
-              <p class="col-5">Airport transit</p>
-              <button
-              class="btn btn-sm btn-primary rounded py-2 px-4 col-3 ms-auto me-3"
-            >
-              Add
-            </button>
-            </div>
-          </form>
-          </div>
-          
-          <div class="modal-footer">
-            <button
-            type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-primary">Book Room</button>
-          </div>
-        </div>
-      </div>
-      </div>
-      <!-- Booking modals end -->
-
-
-      <!-- Detail modals start -->
-      <div
-      class="modal fade w-100"
-      id="detailModal"
-      tabindex="-1"
-      aria-labelledby="detailModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="detailModalLabel">Junior Suite</h1>
-            <button
-            type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <img
-              id="detailsImg"
-              class="img-fluid"
-              src="{% static 'img/room-1.jpg' %}"
-              alt=""
-            />
-            
-          <p id="detailsDesc"></p>
-          <p><strong id="detailsPrice"></strong></p>
-          </div>
-
-        </div>
-      </div>
-      </div>
-      <!-- Detail modals end -->
-    
-
-
     </div>
+  </body>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -582,7 +625,5 @@
     ></script>
 
     <!-- Template Javascript -->
-    <!-- <script src="{% static 'js/book_room.js' %}"></script> -->
     <script src="{% static 'js/main.js' %}"></script>
-  </body>
 </html>

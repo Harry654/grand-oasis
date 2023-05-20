@@ -100,73 +100,46 @@
         items: 2,
       },
     },
-});
+  });
 })(jQuery);
-
-
-
-
-
-
-
+    
 let price_per_night = 0;
-function setRoom () {
-    let newRoomID = event.target.getAttribute('room_id');
-    let newRoomNumber = event.target.getAttribute('room_number');
-    let newRoomType = event.target.getAttribute('room_category');
-    let new_price_per_night = parseInt(event.target.getAttribute('price_per_night'));
-    
-    document.getElementById("myForm").reset();
-    amount.innerHTML = 'Amount: $0';
-    duration.innerHTML = 'Duration: 0 days';
-    
-    document.getElementById("room_number").innerHTML = `Room Number: ${newRoomNumber}`;
-    document.getElementById("room_type").innerHTML = `Room Type: ${newRoomType}`;
-    document.getElementById("room").value = newRoomID;
-    price_per_night = new_price_per_night;
-};
-
-function setDetails() {
-    let roomCategory = event.target.getAttribute('room_category');
-    document.getElementById("detailModalLabel").innerHTML = roomCategory;
-    
-    if(roomCategory === 'Junior Suite') {
-        // document.getElementById("detailsImg").setAttribute("src", "{% static 'img/room-1.jpg' %}");
-        document.getElementById("detailsDesc").innerHTML = "Step into our comfortable and affordable basic hotel room, designed with your convenience in mind. Unwind in a cozy and inviting atmosphere, complete with a well-appointed en-suite bathroom and a snug bed that guarantees a restful night's sleep. Stay productive with a dedicated workspace, ideal for catching up on work or planning your itinerary. Whether you're a budget-conscious traveler or simply seeking simplicity, our basic hotel room provides all the essentials for a pleasant stay without compromising on comfort.";
-        document.getElementById("detailsPrice").innerHTML = "$120 / Night";
-
-    }
-    
-    if(roomCategory === 'Executive Suite') {
-        // document.getElementById("detailsImg").setAttribute("src", "{% static 'img/room-1.jpg' %}");
-        document.getElementById("detailsDesc").innerHTML = "Indulge in a delightful experience in our standard hotel room, where modern elegance and comfort seamlessly come together. Immerse yourself in the tastefully designed space, featuring stylish décor and thoughtful amenities. Drift into tranquility on the comfortable bed, and refresh in the well-appointed bathroom that offers both functionality and style. Whether you're traveling for business or leisure, our standard room provides the perfect retreat to relax and recharge after a day of exploring. Embrace the balance of comfort, convenience, and affordability in our inviting standard hotel room.";
-        document.getElementById("detailsPrice").innerHTML = "$300 / Night";
-
-    }
-    
-    if(roomCategory === 'Super Deluxe') {
-        // document.getElementById("detailsImg").setAttribute("src", "{% static 'img/room-1.jpg' %}");
-        document.getElementById("detailsDesc").innerHTML = "Experience the epitome of luxury and sophistication in our executive hotel room. From the moment you step inside, you'll be enveloped in an ambiance of elegance and refinement. Indulge in the spaciousness of the room, carefully adorned with upscale furnishings and captivating décor. Sink into the plush king-size bed and revel in its comfort. The upgraded bathroom offers a touch of opulence, featuring premium fixtures and luxurious amenities. As an executive guest, you'll enjoy exclusive access to our executive lounge, where personalized services and complimentary perks await. Whether you're traveling for business or seeking a luxurious retreat, our executive room exceeds expectations, offering an extraordinary stay tailored to the discerning traveler.";
-        document.getElementById("detailsPrice").innerHTML = "$500 / Night";
-
-    }
-
+function setRoom() {
+  let newRoomID = event.target.getAttribute("room_id");
+  
+  document.getElementById(`myForm${newRoomID}`).reset();
+  document.getElementById(`amount${newRoomID}`).innerHTML = "Amount: $0";
+  document.getElementById(`duration${newRoomID}`).innerHTML = "Duration: 0 days";
+  
+  let new_price_per_night = parseInt(
+    event.target.getAttribute("price_per_night")
+  );
+  price_per_night = new_price_per_night;
 }
- 
 
-let checkin = document.getElementById("checkin");
-let checkout = document.getElementById("checkout");
-let duration = document.getElementById("duration");
-let amount = document.getElementById("amount");
+let checkin = document.getElementsByClassName("checkin");
+let checkout = document.getElementsByClassName("checkout");
+let duration = document.getElementsByClassName("duration");
+let amount = document.getElementsByClassName("amount");
 
-checkin.addEventListener("input", () => {calculateAmount(price_per_night)});
+for (let i = 0; i < checkin.length; i++) {
+  checkin[i].addEventListener("input", () => {
+    calculateAmount(i, price_per_night);
+  });
+  checkout[i].addEventListener("input", () => {
+    calculateAmount(i, price_per_night);
+  });
+}
 
-checkout.addEventListener("input", () => {calculateAmount(price_per_night)});
-
-function calculateAmount(price_per_night = price_per_night) {
-    let daysDiff = calculateDateDifference(checkin, checkout, duration);
-    if (daysDiff) amount.innerHTML = `Amount: $${daysDiff * price_per_night}`;
-    else amount.innerHTML = `Amount: $${0}`;
+function calculateAmount(index, price_per_night = price_per_night) {
+  let daysDiff = calculateDateDifference(
+    checkin[index],
+    checkout[index],
+    duration[index]
+  );
+  if (daysDiff)
+    amount[index].innerHTML = `Amount: $${daysDiff * price_per_night}`;
+  else amount[index].innerHTML = `Amount: $${0}`;
 }
 
 function calculateDateDifference(start_date_param, end_date_param, duration) {
