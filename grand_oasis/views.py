@@ -135,18 +135,17 @@ def admin(request):
     
     message = ""
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            message = "Message logged successfully"
-            form.save()
+        if 'delete_reservation' in request.POST:
+            current_reservation = Reservation.objects.get(id=request.POST['reservation_id'])
+            current_reservation.delete()
 
-            return redirect('contact')
-        else:
-            message = "Something went wrong"
-    else:
-        form = ContactForm()
-
-    context = {'user': request.user, "message": message}
+    context = {
+        'user': request.user, 
+        "message": message, 
+        "reservations": Reservation.objects.all(),
+        "users": User.objects.all(),
+        "messages": Contact.objects.all(),
+    }
     return render(request, 'admin.html', context)
 
 def contact(request):

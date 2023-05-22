@@ -326,7 +326,7 @@
                       >
                         
                         {% if room.is_available %} Book Now {% endif %}
-                        {% if not room.is_available %} Occupied {% endif %}
+                        {% if not room.is_available %} unavailable {% endif %}
                     </button>
                       {% else %}
                       <a
@@ -336,7 +336,7 @@
                       >
                         
                         {% if room.is_available %} Book Now {% endif %}
-                        {% if not room.is_available %} Occupied {% endif %}
+                        {% if not room.is_available %} unavailable {% endif %}
                     </a>
                       {% endif %}
                       
@@ -491,7 +491,9 @@
                       {% if not room.is_available %}
                         {% for reservation in reservations %}
                           {% if reservation.room.id == room.id %}
-                            <p>This room is occupied from <strong>{{ reservation.checkin }}</strong> to <strong>{{ reservation.checkout }}</strong></p>
+                            <p class="bg-primary text-white p-2 rounded-0">
+                              <i>This room is unavailable from <strong>{{ reservation.checkin }}</strong> to <strong>{{ reservation.checkout }}</strong></i>
+                            </p>
                           {% endif %}
                         {% endfor %}
                       {% endif %}
