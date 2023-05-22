@@ -102,6 +102,8 @@
     },
   });
 })(jQuery);
+
+
     
 let price_per_night = 0;
 function setRoom() {

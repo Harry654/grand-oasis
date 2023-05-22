@@ -103,7 +103,7 @@
                   <a href="index.html" class="nav-item nav-link">Home</a>
                   <a href="about.html" class="nav-item nav-link">About</a>
                   <a href="service.html" class="nav-item nav-link">Services</a>
-                  <a href="room.html" class="nav-item nav-link">Rooms</a>
+                  <a href="reservation.room.html" class="nav-item nav-link">Rooms</a>
                   <div class="nav-item dropdown">
                     <a
                       href="#"
@@ -143,7 +143,7 @@
         <div class="container-fluid page-header-inner py-5">
           <div class="container text-center pb-5">
             <h1 class="display-3 text-white mb-3 animated slideInDown">
-              Contact
+              My Bookings
             </h1>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb justify-content-center text-uppercase">
@@ -162,198 +162,188 @@
       </div>
       <!-- Page Header End -->
 
-      <!-- Booking Start -->
-      <div
-        class="container-fluid booking pb-5 wow fadeIn"
-        data-wow-delay="0.1s"
-      >
-        <div class="container">
-          <div class="bg-white shadow" style="padding: 35px">
-            <div class="row g-2">
-              <div class="col-md-10">
-                <div class="row g-2">
-                  <div class="col-md-3">
-                    <div class="date" id="date1" data-target-input="nearest">
-                      <input
-                        type="text"
-                        class="form-control datetimepicker-input"
-                        placeholder="Check in"
-                        data-target="#date1"
-                        data-toggle="datetimepicker"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="date" id="date2" data-target-input="nearest">
-                      <input
-                        type="text"
-                        class="form-control datetimepicker-input"
-                        placeholder="Check out"
-                        data-target="#date2"
-                        data-toggle="datetimepicker"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <select class="form-select">
-                      <option selected>Adult</option>
-                      <option value="1">Adult 1</option>
-                      <option value="2">Adult 2</option>
-                      <option value="3">Adult 3</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3">
-                    <select class="form-select">
-                      <option selected>Child</option>
-                      <option value="1">Child 1</option>
-                      <option value="2">Child 2</option>
-                      <option value="3">Child 3</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-primary w-100">Submit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Booking End -->
-
-      <!-- Contact Start -->
+      <!-- Bookings Start -->
       <div class="container-xxl py-5">
         <div class="container">
-          <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title text-center text-primary text-uppercase">
-              Contact Us
-            </h6>
-            <h1 class="mb-5">
-              <span class="text-primary text-uppercase">Contact</span> For Any
-              Query
-            </h1>
-          </div>
-          <div class="row g-4">
-            <div class="col-12">
-              <div class="row gy-4">
-                <div class="col-md-4">
-                  <h6
-                    class="section-title text-start text-primary text-uppercase"
-                  >
-                    Booking
-                  </h6>
-                  <p>
-                    <i class="fa fa-envelope-open text-primary me-2"></i
-                    >book@grand_oasis.com
-                  </p>
+
+        <div class="row g-4 mb-5">
+          {% for reservation in myReservations %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="room-item shadow rounded overflow-hidden">
+              <div class="position-relative">
+                  {% if reservation.room.category == 'Junior Suite' %} 
+                    <img
+                    class="img-fluid"
+                    src="{% static 'img/room-1.jpg' %}"
+                    alt=""
+                    />
+                  {% endif %}
+
+                  {% if reservation.room.category == 'Executive Suite' %} 
+                    <img
+                    class="img-fluid"
+                    src="{% static 'img/room-2.jpg' %}"
+                    alt=""
+                    />
+                  {% endif %}
+
+                  {% if reservation.room.category == 'Super Deluxe' %} 
+                    <img
+                    class="img-fluid"
+                    src="{% static 'img/room-3.jpg' %}"
+                    alt=""
+                    />
+                  {% endif %}
+                <small
+                  class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
+                  >${{ reservation.room.price_per_night }}/Night</small
+                >
+                <small
+                  class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
+                  >{{ reservation.room.room_number }}</small
+                >
+              </div>
+              <div class="p-4 mt-2">
+                <div class="d-flex justify-content-between mb-3">
+                  <h5 class="mb-0">{{ reservation.room.category }}</h5>
+                  <div class="ps-2">
+                    <small class="fa fa-star text-primary"></small>
+                    <small class="fa fa-star text-primary"></small>
+                    <small class="fa fa-star text-primary"></small>
+                    <small class="fa fa-star text-primary"></small>
+                    <small class="fa fa-star text-primary"></small>
+                  </div>
                 </div>
-                <div class="col-md-4">
-                  <h6
-                    class="section-title text-start text-primary text-uppercase"
+                <div class="d-flex mb-3">
+                  <small class="border-end me-3 pe-3"
+                    ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
                   >
-                    General
-                  </h6>
-                  <p>
-                    <i class="fa fa-envelope-open text-primary me-2"></i
-                    >info@grand_oasis.com
-                  </p>
+                  <small class="border-end me-3 pe-3"
+                    ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
+                  >
+                  <small
+                    ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
+                  >
                 </div>
-                <div class="col-md-4">
-                  <h6
-                    class="section-title text-start text-primary text-uppercase"
+                <p class="text-body mb-3">
+                  {{ reservation.room.description }}
+                </p>
+                <div class="d-flex justify-content-between">
+                  <!-- {% if reservation.room.category == 'Junior Suite' %} 
+                  {% endif %} -->
+                  <a class="btn btn-sm btn-primary rounded py-2 px-4 mx-auto" 
+                    href=""
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailModal{{ reservation.id }}"
+                    >View Reservation Details</a
                   >
-                    Technical
-                  </h6>
-                  <p>
-                    <i class="fa fa-envelope-open text-primary me-2"></i
-                    >tech@grand_oasis.com
-                  </p>
+                  
                 </div>
               </div>
             </div>
-            <div class="col-md-6 wow fadeIn" data-wow-delay="0.1s">
-              <iframe
-                class="position-relative rounded w-100 h-100"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                frameborder="0"
-                style="min-height: 350px; border: 0"
-                allowfullscreen=""
-                aria-hidden="false"
-                tabindex="0"
-              ></iframe>
-            </div>
-            <div class="col-md-6">
-              <div class="wow fadeInUp" data-wow-delay="0.2s">
-                <form action="" method="POST">
-                {% csrf_token %}
-                <input type="text" name="msg_sender" value="{{ user.id }}" hidden />
-                <input type="text" name="msg_receiver" value="1" hidden />
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="name"
-                          placeholder="Your Name"
-                          readonly
-                          value="{{ user.username }}"
-                          />
-                        <label for="name">Your Name</label>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-floating">
-                          <input
-                          type="email"
-                          class="form-control"
-                          id="email"
-                          placeholder="Your Email"
-                          readonly
-                          value="{{ user.email }}"
-                        />
-                        <label for="email">Your Email</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="subject"
-                          placeholder="Subject"
-                          required
-                          name="subject"
-                          />
-                          <label for="subject">Subject</label>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-floating">
-                        <textarea
-                        class="form-control"
-                          placeholder="Leave a message here"
-                          id="message"
-                          style="height: 150px"
-                          required
-                          name="message"
-                          ></textarea>
-                          <label for="message">Message</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100 py-3" type="submit">
-                        Send Message
-                      </button>
-                    </div>
-                  </div>
+          
+          <!-- Detail modal start -->
+            <div
+            class="modal fade w-100"
+            id="detailModal{{ reservation.id }}"
+            tabindex="-1"
+            aria-labelledby="detailModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="detailModalLabel">Reservation Details</h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <div class="modal-body">
+                  <p><strong>Reservation ID: </strong>{{ reservation.id }}</p>
+                  <p><strong>Customer Name: </strong>{{ reservation.user.username }}</p>
+                  <p><strong>Check-in Date: </strong>{{ reservation.checkin }}</p>
+                  <p><strong>Check-out Date: </strong>{{ reservation.checkout }}</p>
+                  <p><strong>Room Number: </strong>{{ reservation.room.room_number }}</p>
+                  <p><strong>Room Type: </strong>{{ reservation.room.category }}</p>
+                  <p><strong>Room Price: </strong>${{ reservation.room.price_per_night }} / Night</p>
+                  <p><strong>Duration: </strong>{{ reservation.duration }} days</p>
+                  <!-- <p><strong>Number of Guests: </strong> 2</p> -->
+                  {% for date in serviceDates %}
+                    {% if date.extra_service.reservation.id == reservation.id %}
+                  
+                      <p><strong>{{ date.extra_service.service.type }} on {{ date.service_date_time }}: </strong>${{ date.extra_service.service.price }}</p>
+                      
+                    {% endif %}
+                  {% endfor %}
+
+                  
+                  <p><strong>Total Cost: </strong>{{ reservation.total_price }}</p>
+                  <!-- <p><strong>Special Requests: </strong> Non-smoking room</p> -->
+                  
+                  
+                  <hr />
+                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampletop" aria-expanded="false" aria-controls="collapseExampletop">
+                    Extra Services
+                  </button>
+
+                  <div class="collapse mt-3" id="collapseExampletop">
+                  <table class="table">
+                    <tbody>
+                      {% for service in serviceTypes %}
+                        <tr>
+                          <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="add_service">
+                            <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
+                            <input type="text" value="{{ service.id }}" name="service_id" hidden required>
+
+                            <strong>{{ service.type }} for ${{ service.price }}</strong><br />
+                            <input type="datetime-local" name="service_date_time" required min="{{ reservation.checkin|date:'Y-m-d' }}T12:00" max="{{ reservation.checkout|date:'Y-m-d' }}T11:59">
+                            &ThinSpace;<button class="btn btn-success">Add</button><br /><br />
+                          </form>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                
+              </div>
+              </div>
+              
+              <div class="modal-footer">
+                <form action="" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="delete_reservation" />
+                  <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
+                  <button type="submit" class="btn btn-danger">Cancel Reservation</button>
                 </form>
               </div>
+
+              </div>
             </div>
-          </div>
+            </div>
+          <!-- Detail modal end -->
+
+
+            </div>
+          {% endfor %}
         </div>
       </div>
-      <!-- Contact End -->
+    </div>
+      <!-- Bookings End -->
+      
+
+      <!-- Message Modal Start -->
+      {% if message %}
+        <script>
+          alert('{{ message }}');
+        </script>
+      {% endif %}
+      
+      <!-- Message Modal End -->
 
       <!-- Footer Start -->
       <div
@@ -466,6 +456,7 @@
           </div>
         </div>
       </div>
+      
       <!-- Footer End -->
 
       <!-- Back to Top -->

@@ -229,11 +229,20 @@
               Explore Our <span class="text-primary text-uppercase">Rooms</span>
             </h1>
           </div>
+
+          <div class="accordion" id="accordionExample{{ forloop.counter }}">
           {% for floor in floors %}
-          
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-controls="collapseOne{{ forloop.counter }}">
+                  <h5>Floor {{ forloop.counter }}</h5>
+                </button>
+              </h2>
+              <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample{{ forloop.counter }}">
+                <div class="accordion-body">
+                
             <!-- Room Start -->
             <div class="row g-4 mb-5">
-              <h2>Floor {{ forloop.counter }}</h2>
               {% for room in floor %}
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="room-item shadow rounded overflow-hidden">
@@ -305,7 +314,7 @@
                         >View Detail</a
                       >
                       {% if user.is_authenticated %} 
-                      <a
+                      <button
                         id="book_now_btn"
                         class="btn btn-sm btn-dark rounded py-2 px-4"
                         onclick="setRoom()"
@@ -318,7 +327,7 @@
                         
                         {% if room.is_available %} Book Now {% endif %}
                         {% if not room.is_available %} Occupied {% endif %}
-                    </a>
+                    </button>
                       {% else %}
                       <a
                         class="btn btn-sm btn-dark rounded py-2 px-4"
@@ -363,8 +372,16 @@
                     <p id="room_number">Room Number: {{ room.room_number }}</p>
                     <p id="room_type">Room Type: {{ room.category }}</p>
                     
-                      
-                      <select name="room" required id="room{{ room.id }}" hidden>
+                      <select name="user" required hidden>
+                        {% for userOption in users %}
+                          <option 
+                            value="{{ userOption.id }}" 
+                            {% if userOption.id == user.id %} selected {% endif %}
+                          ></option>
+                        {% endfor %}
+                      </select>
+
+                      <select name="room" required hidden>
                         {% for roomOption in rooms %}
                           <option 
                             value="{{ roomOption.id }}" 
@@ -372,6 +389,7 @@
                           ></option>
                         {% endfor %}
                       </select>
+                      
                       <label for="checkin">Check In: 
                         <input name="checkin" id="checkin" class="checkin" type="date" required />
                       </label><br />
@@ -384,14 +402,19 @@
                       <p id="amount{{ room.id }}" class="amount">Amount: $0</p>
                       
                       <!-- <h1 class="modal-title fs-5" id="juniorSuiteModalLabel">Additional Services</h1>
-                      <div class="row">
-                      <p class="col-5">Airport transit</p>
-                      <button
-                      class="btn btn-sm btn-primary rounded py-2 px-4 col-3 ms-auto me-3"
-                    >
-                      Add
-                    </button> -->
-                    
+                      
+
+                        {% for service in extra_services %}
+                          <div class="extra-service-item">
+                            <span>{{ service.type }}</span>
+                            <span>{{ service.price }}</span>
+                            <button class="btn btn-danger btn-sm delete-service" data-service-id="{{ service.id }}">Delete</button>
+                          </div>
+                        {% endfor %}
+
+                      <button class="btn btn-primary btn-sm" id="add-service">Add Service</button> -->
+
+                    <!-- {{form.as_div}} -->
                   </div>
                   
                   
@@ -417,7 +440,11 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="detailModalLabel">Junior Suite</h1>
+                      <h1 class="modal-title fs-5" id="detailModalLabel">
+                        {% if room.category == 'Junior Suite' %} Junior Suite {% endif %}
+                        {% if room.category == 'Executive Suite' %} Executive Suite {% endif %}
+                        {% if room.category == 'Super Deluxe' %} Super Deluxe {% endif %}
+                      </h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -481,12 +508,24 @@
               {% endfor %}
             </div>
             <!-- Room End -->
-            
-          {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
         </div>
       </div>
       <!-- Floor End -->
 
+      <!-- Message Modal Start -->
+      {% if message %}
+        <script>
+          alert('{{ message }}');
+        </script>
+      {% endif %}
+      
+      <!-- Message Modal End -->
+      
       <!-- Footer Start -->
       <div
         class="container-fluid bg-dark text-light footer wow fadeIn mt-5"
