@@ -657,15 +657,16 @@
                   <div class="modal-body">
                     <p id="room_number">Room Number: {{ room.room_number }}</p>
                     <p id="room_type">Room Type: {{ room.category }}</p>
-                    
-                      <select name="user" required hidden>
-                        {% for userOption in users %}
-                          <option 
+                    <div>
+                        <label for="user">Reserve for: </label>
+                        <select id="user" name="user" required>
+                            {% for userOption in users %}
+                            <option 
                             value="{{ userOption.id }}" 
-                            {% if userOption.id == user.id %} selected {% endif %}
-                          ></option>
-                        {% endfor %}
-                      </select>
+                            >{{ userOption }}</option>
+                            {% endfor %}
+                        </select>
+                    </div><br />
 
                       <select name="room" required hidden>
                         {% for roomOption in rooms %}
@@ -675,14 +676,16 @@
                           ></option>
                         {% endfor %}
                       </select>
-                      
-                      <label for="checkin">Check In: 
-                        <input name="checkin" id="checkin" class="checkin" type="date" required />
-                      </label><br />
-        
-                      <label for="checkout">Check Out: 
+
+                        <div>
+                            <label for="checkin">Check In:</label>
+                            <input name="checkin" id="checkin" class="checkin" type="date" required />
+                        </div><br />
+                          
+                    <div>
+                        <label for="checkout">Check Out: </label>
                         <input name="checkout" id="checkout" class="checkout" type="date" required />
-                      </label>
+                    </div><br />
         
                       <p id="duration{{ room.id }}" class="duration">Duration: 0 days</p>
                       <p id="amount{{ room.id }}" class="amount">Amount: $0</p>
@@ -829,6 +832,7 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'admin/js/main.js' %}"></script>
+    <!-- <script src="{% static 'js/main.js' %}"></script> -->
 
 </body>
 

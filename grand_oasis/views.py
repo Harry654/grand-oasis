@@ -7,7 +7,12 @@ from datetime import date, datetime
 
 
 def index(request):
-    return render(request, 'index.html', {"num_of_rooms": len(Room.objects.all())})
+    context = {
+        "num_of_rooms": len(Room.objects.all()),
+        "num_of_clients": len(User.objects.filter(is_staff=False)),
+        "num_of_staff": len(User.objects.filter(is_staff=True)),
+        }
+    return render(request, 'index.html', context)
 
 def rooms(request):
     message = ""
@@ -142,7 +147,7 @@ def admin(request):
         if 'delete_reservation' in request.POST:
             current_reservation = Reservation.objects.get(id=request.POST['reservation_id'])
             current_reservation.delete()
-        if 'reply_message' in request.POST:
+        elif 'reply_message' in request.POST:
             current_message_sender = User.objects.get(id=request.POST['msg_sender'])
             current_message_receiver = User.objects.get(id=request.POST['msg_receiver'])
             new_message = Contact.objects.create(
@@ -154,16 +159,16 @@ def admin(request):
             new_message.save()
 
             message = "Response sent"
-        if 'delete_user' in request.POST:
+        elif 'delete_user' in request.POST:
             current_user = User.objects.get(id=request.POST['user_id'])
             current_user.delete()
             message = "User deleted successfully"
-        if 'update_user' in request.POST:
+        elif 'update_user' in request.POST:
             current_user = User.objects.get(id=request.POST['user_id'])
             current_user.username = request.POST['username']
             current_user.email = request.POST['email']
             current_user.save()
-            
+
             message = "User updated successfully"
 
     today = date.today()

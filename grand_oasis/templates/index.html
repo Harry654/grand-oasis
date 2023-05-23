@@ -75,30 +75,9 @@
               <h1 class="m-0 text-primary text-uppercase">Grand Oasis</h1>
             </a>
           </div>
-          <div class="col-lg-9">
-            <div class="row gx-0 bg-white d-none d-lg-flex">
-              <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center py-2 me-4">
-                  <i class="fa fa-envelope text-primary me-2"></i>
-                  <p class="mb-0">info@example.com</p>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center py-2">
-                  <i class="fa fa-phone-alt text-primary me-2"></i>
-                  <p class="mb-0">+012 345 6789</p>
-                </div>
-              </div>
-              <div class="col-lg-5 px-5 text-end">
-                <div class="d-inline-flex align-items-center py-2">
-                  <a class="me-3" href=""><i class="fab fa-facebook-f"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-twitter"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-linkedin-in"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-instagram"></i></a>
-                  <a class="" href=""><i class="fab fa-youtube"></i></a>
-                </div>
-              </div>
-            </div>
+          <div class="col-lg-5 bg-primary ms-auto">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0">
-              <a href="index.html" class="navbar-brand d-block d-lg-none">
+              <a href="/" class="navbar-brand d-block d-lg-none">
                 <h1 class="m-0 text-primary text-uppercase">Grand Oasis</h1>
               </a>
               <button
@@ -114,16 +93,32 @@
                 id="navbarCollapse"
               >
                 <div class="navbar-nav mr-auto py-0">
-                  <a href="" class="nav-item nav-link active">Home</a>
-                  <a href="/rooms" class="nav-item nav-link">Rooms</a>
+                  <a href="/" class="nav-item nav-link active">Home</a>
+                  <a href="about.html" class="nav-item nav-link">About</a>
                   <a href="service.html" class="nav-item nav-link">Services</a>
-                  <a href="contact.html" class="nav-item nav-link">Chat now</a>
+                  <a href="/rooms" class="nav-item nav-link">Rooms</a>
+                  <div class="nav-item dropdown">
+                    <a
+                      href="#"
+                      class="nav-link dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      >Pages</a
+                    >
+                    <div class="dropdown-menu rounded-0 m-0">
+                      <a href="booking.html" class="dropdown-item">Booking</a>
+                      <a href="team.html" class="dropdown-item">Our Team</a>
+                      <a href="testimonial.html" class="dropdown-item"
+                        >Testimonial</a
+                      >
+                    </div>
+                  </div>
+                  <a href="/contact" class="nav-item nav-link">Contact</a>
                 </div>
-                <a
+                <!-- <a
                   href="https://htmlcodex.com/hotel-html-template-pro"
                   class="btn btn-primary rounded-0 py-4 px-md-5 d-none d-lg-block"
                   >Premium Version<i class="fa fa-arrow-right ms-3"></i
-                ></a>
+                ></a> -->
               </div>
             </nav>
           </div>
@@ -225,7 +220,7 @@
       <!-- Carousel End -->
 
       <!-- Booking Start -->
-      <div
+      <!-- <div
         class="container-fluid booking pb-5 wow fadeIn"
         data-wow-delay="0.1s"
       >
@@ -280,7 +275,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- Booking End -->
 
       <!-- About Start -->
@@ -312,8 +307,8 @@
                   <div class="border rounded p-1">
                     <div class="border rounded text-center p-4">
                       <i class="fa fa-users-cog fa-2x text-primary mb-2"></i>
-                      <h2 class="mb-1" data-toggle="counter-up">125</h2>
-                      <p class="mb-0">Staffs</p>
+                      <h2 class="mb-1" data-toggle="counter-up">{{ num_of_staff }}</h2>
+                      <p class="mb-0">Staff</p>
                     </div>
                   </div>
                 </div>
@@ -321,7 +316,7 @@
                   <div class="border rounded p-1">
                     <div class="border rounded text-center p-4">
                       <i class="fa fa-users fa-2x text-primary mb-2"></i>
-                      <h2 class="mb-1" data-toggle="counter-up">1234</h2>
+                      <h2 class="mb-1" data-toggle="counter-up">{{ num_of_clients }}</h2>
                       <p class="mb-0">Clients</p>
                     </div>
                   </div>
@@ -418,10 +413,10 @@
                     Affordable comfort. Cozy bed, en-suite bathroom, and workspace. Perfect for budget-conscious travelers. Prices starting at $120 per night.
                   </p>
                   <div class="d-flex justify-content-between">
-                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/rooms"
                       >View Detail</a
                     >
-                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href="/rooms"
                       >Book Now</a
                     >
                   </div>
@@ -467,10 +462,10 @@
                     Modern elegance. Tasteful décor, comfortable bed, well-appointed bathroom. Ideal for business or leisure. Prices starting at $300 per night.
                   </p>
                   <div class="d-flex justify-content-between">
-                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/rooms"
                       >View Detail</a
                     >
-                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href="/rooms"
                       >Book Now</a
                     >
                   </div>
@@ -516,10 +511,10 @@
                     Luxury personified. Spacious, stylish, and exclusive amenities. King-size bed, sitting area, upgraded bathroom. Prices starting at $500 per night.
                   </p>
                   <div class="d-flex justify-content-between">
-                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-primary rounded py-2 px-4" href="/rooms"
                       >View Detail</a
                     >
-                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href=""
+                    <a class="btn btn-sm btn-dark rounded py-2 px-4" href="/rooms"
                       >Book Now</a
                     >
                   </div>
