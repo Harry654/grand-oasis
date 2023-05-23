@@ -1,3 +1,68 @@
+let price_per_night = 0;
+console.log("🚀 ~ file: main.js:109 ~ price_per_night:", price_per_night)
+function setRoom() {
+  let newRoomID = event.target.getAttribute("room_id");
+  
+  document.getElementById(`myForm${newRoomID}`).reset();
+  document.getElementById(`amount${newRoomID}`).innerHTML = "Amount: $0";
+  document.getElementById(`duration${newRoomID}`).innerHTML = "Duration: 0 days";
+  
+  let new_price_per_night = parseInt(
+    event.target.getAttribute("price_per_night")
+  );
+  price_per_night = new_price_per_night;
+}
+
+let checkin = document.getElementsByClassName("checkin");
+let checkout = document.getElementsByClassName("checkout");
+let duration = document.getElementsByClassName("duration");
+let amount = document.getElementsByClassName("amount");
+
+for (let i = 0; i < checkin.length; i++) {
+  checkin[i].addEventListener("input", () => {
+    calculateAmount(i, price_per_night);
+  });
+  checkout[i].addEventListener("input", () => {
+    calculateAmount(i, price_per_night);
+  });
+}
+
+function calculateAmount(index, price_per_night = price_per_night) {
+  let daysDiff = calculateDateDifference(
+    checkin[index],
+    checkout[index],
+    duration[index]
+  );
+  if (daysDiff)
+    amount[index].innerHTML = `Amount: $${daysDiff * price_per_night}`;
+  else amount[index].innerHTML = `Amount: $${0}`;
+}
+
+function calculateDateDifference(start_date_param, end_date_param, duration) {
+  let start_date = new Date(start_date_param.value);
+  let end_date = new Date(end_date_param.value);
+
+  // Calculate the time difference in milliseconds
+  let timeDiff = end_date - start_date;
+
+  if (timeDiff <= 0) {
+    alert("Invalid date range");
+    duration.innerHTML = `Duration: ${0} days`;
+    end_date_param.value = start_date_param.value;
+    return false;
+  }
+
+  if (isNaN(timeDiff)) return false;
+
+  // Convert the time difference to days
+  let daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+  duration.innerHTML = `Duration: ${daysDiff} days`;
+
+  return daysDiff;
+}
+
+
 (function ($) {
   "use strict";
 
@@ -102,68 +167,3 @@
     },
   });
 })(jQuery);
-
-
-    
-let price_per_night = 0;
-function setRoom() {
-  let newRoomID = event.target.getAttribute("room_id");
-  
-  document.getElementById(`myForm${newRoomID}`).reset();
-  document.getElementById(`amount${newRoomID}`).innerHTML = "Amount: $0";
-  document.getElementById(`duration${newRoomID}`).innerHTML = "Duration: 0 days";
-  
-  let new_price_per_night = parseInt(
-    event.target.getAttribute("price_per_night")
-  );
-  price_per_night = new_price_per_night;
-}
-
-let checkin = document.getElementsByClassName("checkin");
-let checkout = document.getElementsByClassName("checkout");
-let duration = document.getElementsByClassName("duration");
-let amount = document.getElementsByClassName("amount");
-
-for (let i = 0; i < checkin.length; i++) {
-  checkin[i].addEventListener("input", () => {
-    calculateAmount(i, price_per_night);
-  });
-  checkout[i].addEventListener("input", () => {
-    calculateAmount(i, price_per_night);
-  });
-}
-
-function calculateAmount(index, price_per_night = price_per_night) {
-  let daysDiff = calculateDateDifference(
-    checkin[index],
-    checkout[index],
-    duration[index]
-  );
-  if (daysDiff)
-    amount[index].innerHTML = `Amount: $${daysDiff * price_per_night}`;
-  else amount[index].innerHTML = `Amount: $${0}`;
-}
-
-function calculateDateDifference(start_date_param, end_date_param, duration) {
-  let start_date = new Date(start_date_param.value);
-  let end_date = new Date(end_date_param.value);
-
-  // Calculate the time difference in milliseconds
-  let timeDiff = end_date - start_date;
-
-  if (timeDiff <= 0) {
-    alert("Invalid date range");
-    duration.innerHTML = `Duration: ${0} days`;
-    end_date_param.value = start_date_param.value;
-    return false;
-  }
-
-  if (isNaN(timeDiff)) return false;
-
-  // Convert the time difference to days
-  let daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-  duration.innerHTML = `Duration: ${daysDiff} days`;
-
-  return daysDiff;
-}

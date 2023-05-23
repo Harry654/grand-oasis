@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DASHMIN - Bootstrap Admin Template</title>
+    <title>Admin - Bootstrap Admin Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -393,8 +393,67 @@
                         <div class=" bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="mb-0">Registered Users</h6>
-                                <button class="btn btn-success text-white">Add User</button>
+                                <button data-bs-toggle="modal" data-bs-target="#createUserModal" class="btn btn-success text-white">Add User</button>
+
                             </div>
+
+                            <div
+                                class="modal fade w-100"
+                                id="createUserModal"
+                                tabindex="-1"
+                                aria-labelledby="createUserModalLabel"
+                                aria-hidden="true"
+                            >
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="createUserModalLabel">
+                                    Create User
+                                </h1>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+                                </div>
+
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <input type="hidden" name="add_user" />
+                                        <div>
+                                            <label for="username">Username</label><br />
+                                            <input id="username" type="text" name="username" required />
+                                        </div><br />
+                                        <div>
+                                            <label for="email">Email</label><br />
+                                            <input id="email" type="email" name="email" required />
+                                        </div><br />
+                                    <div>
+                                        <label for="password">Password</label><br />
+                                        <input id="password" type="password" name="password" required />
+                                    </div><br />
+                                    <div>
+                                    <label for="user_type">User Type</label><br />
+                                    <select id="user_type" name="user_type">
+                                        <option value="admin">Admin</option>
+                                        <option value="client">Client</option>
+                                    </select><br /><br />
+                                    </div><br />
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-warning text-white">Create User</button>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            
+                        </div>
+                            </div>
+
+                            
                             {% for user in users %}
                                 {% if not user.id == request.user.id %}
                                 <div class="d-flex border-bottom py-3">
@@ -444,13 +503,13 @@
                                             <input type="hidden" name="update_user">
                                             <input type="hidden" value="{{ user.id }}" name="user_id">
                                             <div>
-                                                <label for="username"><strong>Username</strong></label><br />
-                                                <input id="username" type="text" value="{{ user.username }}" name="username">
+                                                <label for="username{{user.id}}"><strong>Username</strong></label><br />
+                                                <input id="username{{user.id}}" type="text" value="{{ user.username }}" name="username">
                                             </div><br />
 
                                             <div>
-                                                <label for="email"><strong>Email</strong></label><br />
-                                                <input id="email" type="email" value="{{ user.email }}" name="email">
+                                                <label for="email{{user.id}}"><strong>Email</strong></label><br />
+                                                <input id="email{{user.id}}" type="email" value="{{ user.email }}" name="email">
                                             </div><br />
 
                                             <button type="submit" class="btn btn-warning text-white">Update</button>
@@ -654,16 +713,17 @@
                   
                   <form id="myForm{{ room.id }}" action="" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="make_reservation">
                   <div class="modal-body">
                     <p id="room_number">Room Number: {{ room.room_number }}</p>
                     <p id="room_type">Room Type: {{ room.category }}</p>
                     <div>
-                        <label for="user">Reserve for: </label>
-                        <select id="user" name="user" required>
+                        <label for="user{{ room.id }}">Reserve for: </label>
+                        <select id="user{{ room.id }}" name="user" required>
                             {% for userOption in users %}
-                            <option 
-                            value="{{ userOption.id }}" 
-                            >{{ userOption }}</option>
+                                {% if not userOption.is_staff %}
+                                    <option value="{{ userOption.id }}">{{ userOption.username }}</option>
+                            {% endif %}
                             {% endfor %}
                         </select>
                     </div><br />
@@ -679,12 +739,12 @@
 
                         <div>
                             <label for="checkin">Check In:</label>
-                            <input name="checkin" id="checkin" class="checkin" type="date" required />
+                            <input name="checkin" class="checkin" type="date" required />
                         </div><br />
                           
                     <div>
                         <label for="checkout">Check Out: </label>
-                        <input name="checkout" id="checkout" class="checkout" type="date" required />
+                        <input name="checkout" class="checkout" type="date" required />
                     </div><br />
         
                       <p id="duration{{ room.id }}" class="duration">Duration: 0 days</p>
@@ -695,7 +755,8 @@
                   
                   
                   <div class="modal-footer">
-                    <button class="btn btn-primary">Book Room</button>
+                    <button type="submit" class="btn btn-primary">Book Room</button>
+                    <!-- <button class="btn btn-primary">Book Room</button> -->
                   </div>
                 </form>
 
@@ -818,11 +879,18 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-
+    <!-- Message Modal Start -->
+        {% if message %}
+            <script>
+            alert('{{ message }}');
+            </script>
+        {% endif %}
+    
+    <!-- Message Modal End -->
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/chart/chart.min.js"></script>
+    <script src="{% static 'admin/lib/chart/chart.min.js' %}"></script>
     <script src="{% static 'admin/lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'admin/lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'admin/lib/owlcarousel/owl.carousel.min.js' %}"></script>
@@ -831,8 +899,8 @@
     <script src="{% static 'admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 
     <!-- Template Javascript -->
-    <script src="{% static 'admin/js/main.js' %}"></script>
-    <!-- <script src="{% static 'js/main.js' %}"></script> -->
+    <!-- <script src="{% static 'admin/js/main.js' %}"></script> -->
+    <script src="{% static 'js/main.js' %}"></script>
 
 </body>
 

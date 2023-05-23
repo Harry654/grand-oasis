@@ -61,30 +61,9 @@
               <h1 class="m-0 text-primary text-uppercase">Grand Oasis</h1>
             </a>
           </div>
-          <div class="col-lg-9">
-            <div class="row gx-0 bg-white d-none d-lg-flex">
-              <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center py-2 me-4">
-                  <i class="fa fa-envelope text-primary me-2"></i>
-                  <p class="mb-0">info@example.com</p>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center py-2">
-                  <i class="fa fa-phone-alt text-primary me-2"></i>
-                  <p class="mb-0">+012 345 6789</p>
-                </div>
-              </div>
-              <div class="col-lg-5 px-5 text-end">
-                <div class="d-inline-flex align-items-center py-2">
-                  <a class="me-3" href=""><i class="fab fa-facebook-f"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-twitter"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-linkedin-in"></i></a>
-                  <a class="me-3" href=""><i class="fab fa-instagram"></i></a>
-                  <a class="" href=""><i class="fab fa-youtube"></i></a>
-                </div>
-              </div>
-            </div>
+          <div class="col-lg-4 bg-primary ms-auto">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0">
-              <a href="index.html" class="navbar-brand d-block d-lg-none">
+              <a href="/" class="navbar-brand d-block d-lg-none">
                 <h1 class="m-0 text-primary text-uppercase">Grand Oasis</h1>
               </a>
               <button
@@ -100,34 +79,18 @@
                 id="navbarCollapse"
               >
                 <div class="navbar-nav mr-auto py-0">
-                  <a href="index.html" class="nav-item nav-link">Home</a>
-                  <a href="about.html" class="nav-item nav-link">About</a>
-                  <a href="service.html" class="nav-item nav-link">Services</a>
-                  <a href="reservation.room.html" class="nav-item nav-link">Rooms</a>
-                  <div class="nav-item dropdown">
-                    <a
-                      href="#"
-                      class="nav-link dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      >Pages</a
-                    >
-                    <div class="dropdown-menu rounded-0 m-0">
-                      <a href="booking.html" class="dropdown-item">Booking</a>
-                      <a href="team.html" class="dropdown-item">Our Team</a>
-                      <a href="testimonial.html" class="dropdown-item"
-                        >Testimonial</a
-                      >
-                    </div>
-                  </div>
-                  <a href="contact.html" class="nav-item nav-link active"
-                    >Contact</a
-                  >
+                  <a href="/" class="nav-item nav-link">Home</a>
+                  
+                  <a href="/my-bookings" class="nav-item nav-link active">My Bookings</a>
+                  <a href="/rooms" class="nav-item nav-link">Rooms</a>
+                  
+                  <a href="/contact" class="nav-item nav-link">Contact</a>
                 </div>
-                <a
+                <!-- <a
                   href="https://htmlcodex.com/hotel-html-template-pro"
                   class="btn btn-primary rounded-0 py-4 px-md-5 d-none d-lg-block"
                   >Premium Version<i class="fa fa-arrow-right ms-3"></i
-                ></a>
+                ></a> -->
               </div>
             </nav>
           </div>
@@ -169,163 +132,217 @@
         <div class="row g-4 mb-5">
           {% for reservation in myReservations %}
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="room-item shadow rounded overflow-hidden">
-              <div class="position-relative">
-                  {% if reservation.room.category == 'Junior Suite' %} 
-                    <img
-                    class="img-fluid"
-                    src="{% static 'img/room-1.jpg' %}"
-                    alt=""
-                    />
-                  {% endif %}
+              <div class="room-item shadow rounded overflow-hidden">
+                <div class="position-relative">
+                
+                    {% if reservation.room.category == 'Junior Suite' %} 
+                      <img
+                      class="img-fluid"
+                      src="{% static 'img/room-1.jpg' %}"
+                      alt=""
+                      />
+                    {% endif %}
 
-                  {% if reservation.room.category == 'Executive Suite' %} 
-                    <img
-                    class="img-fluid"
-                    src="{% static 'img/room-2.jpg' %}"
-                    alt=""
-                    />
-                  {% endif %}
+                    {% if reservation.room.category == 'Executive Suite' %} 
+                      <img
+                      class="img-fluid"
+                      src="{% static 'img/room-2.jpg' %}"
+                      alt=""
+                      />
+                    {% endif %}
 
-                  {% if reservation.room.category == 'Super Deluxe' %} 
-                    <img
-                    class="img-fluid"
-                    src="{% static 'img/room-3.jpg' %}"
-                    alt=""
-                    />
-                  {% endif %}
-                <small
-                  class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
-                  >${{ reservation.room.price_per_night }}/Night</small
-                >
-                <small
-                  class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
-                  >{{ reservation.room.room_number }}</small
-                >
+                    {% if reservation.room.category == 'Super Deluxe' %} 
+                      <img
+                      class="img-fluid"
+                      src="{% static 'img/room-3.jpg' %}"
+                      alt=""
+                      />
+                    {% endif %}
+                  <small
+                    class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
+                    >${{ reservation.room.price_per_night }}/Night</small
+                  >
+                  
+                  <small
+                    class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
+                    >{{ reservation.room.room_number }}</small
+                  >
+                </div>
+                <div class="p-4 mt-2">
+                  <div class="d-flex justify-content-between mb-3">
+                    <h5 class="mb-0">{{ reservation.room.category }}</h5>
+                    <div class="ps-2">
+                      <small class="fa fa-star text-primary"></small>
+                      <small class="fa fa-star text-primary"></small>
+                      <small class="fa fa-star text-primary"></small>
+                      <small class="fa fa-star text-primary"></small>
+                      <small class="fa fa-star text-primary"></small>
+                    </div>
+                  </div>
+                  <div class="d-flex mb-3">
+                    <small class="border-end me-3 pe-3"
+                      ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
+                    >
+                    <small class="border-end me-3 pe-3"
+                      ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
+                    >
+                    <small
+                      ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
+                    >
+                  </div>
+                  <p class="text-body mb-3">
+                    {{ reservation.room.description }}
+                    
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    {% if reservation.checkout == today %}
+                      <button
+                      data-bs-toggle="modal"
+                      data-bs-target="#renewModal{{reservation.id}}"
+                        class="btn btn-sm btn-success text-white py-1 px-3 text-center"
+                        >Renew</button
+                      >
+
+                      <!-- Detail modal start -->
+              <div
+              class="modal fade w-100"
+              id="renewModal{{ reservation.id }}"
+              tabindex="-1"
+              aria-labelledby="detailModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailModalLabel">Renew Reservation</h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+
+                  <form action="" method="post">
+                    {% csrf_token %}
+                  <div class="modal-body">
+                    <p><strong>Checkout: </strong>{{ reservation.checkout }}</p>
+                    <input type="hidden" name="renew_reservation" />
+                    <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
+                    <div>
+                      <label for="date{{ reservation.id }}">New checkout Date</label><br />
+                      <input id="date{{ reservation.id }}" type="date" name="new_checkout" required/>
+                    </div>
+                  </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Renew</button>
+                  </div>
+                </form>
+
+                </div>
               </div>
-              <div class="p-4 mt-2">
-                <div class="d-flex justify-content-between mb-3">
-                  <h5 class="mb-0">{{ reservation.room.category }}</h5>
-                  <div class="ps-2">
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
-                    <small class="fa fa-star text-primary"></small>
+              </div>
+            <!-- Detail modal end -->
+                    {% endif %}
+                        
+                    <a class="btn btn-sm btn-primary rounded py-2 px-4 mx-auto" 
+                      href=""
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailModal{{ reservation.id }}"
+                      >View Details</a
+                    >
+                   
+                    
                   </div>
                 </div>
-                <div class="d-flex mb-3">
-                  <small class="border-end me-3 pe-3"
-                    ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
-                  >
-                  <small class="border-end me-3 pe-3"
-                    ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
-                  >
-                  <small
-                    ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
-                  >
-                </div>
-                <p class="text-body mb-3">
-                  {{ reservation.room.description }}
-                </p>
-                <div class="d-flex justify-content-between">
-                  <!-- {% if reservation.room.category == 'Junior Suite' %} 
-                  {% endif %} -->
-                  <a class="btn btn-sm btn-primary rounded py-2 px-4 mx-auto" 
-                    href=""
-                    data-bs-toggle="modal"
-                    data-bs-target="#detailModal{{ reservation.id }}"
-                    >View Reservation Details</a
-                  >
-                  
-                </div>
-              </div>
-            </div>
-          
-          <!-- Detail modal start -->
-            <div
-            class="modal fade w-100"
-            id="detailModal{{ reservation.id }}"
-            tabindex="-1"
-            aria-labelledby="detailModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="detailModalLabel">Reservation Details</h1>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-
-                <div class="modal-body">
-                  <p><strong>Reservation ID: </strong>{{ reservation.id }}</p>
-                  <p><strong>Customer Name: </strong>{{ reservation.user.username }}</p>
-                  <p><strong>Check-in Date: </strong>{{ reservation.checkin }}</p>
-                  <p><strong>Check-out Date: </strong>{{ reservation.checkout }}</p>
-                  <p><strong>Room Number: </strong>{{ reservation.room.room_number }}</p>
-                  <p><strong>Room Type: </strong>{{ reservation.room.category }}</p>
-                  <p><strong>Room Price: </strong>${{ reservation.room.price_per_night }} / Night</p>
-                  <p><strong>Duration: </strong>{{ reservation.duration }} days</p>
-                  <!-- <p><strong>Number of Guests: </strong> 2</p> -->
-                  {% for date in serviceDates %}
-                    {% if date.extra_service.reservation.id == reservation.id %}
-                  
-                      <p><strong>{{ date.extra_service.service.type }} on {{ date.service_date_time }}: </strong>${{ date.extra_service.service.price }}</p>
-                      
-                    {% endif %}
-                  {% endfor %}
-
-                  
-                  <p><strong>Total Cost: </strong>{{ reservation.total_price }}</p>
-                  <!-- <p><strong>Special Requests: </strong> Non-smoking room</p> -->
-                  
-                  
-                  <hr />
-                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampletop" aria-expanded="false" aria-controls="collapseExampletop">
-                    Extra Services
-                  </button>
-
-                  <div class="collapse mt-3" id="collapseExampletop">
-                  <table class="table">
-                    <tbody>
-                      {% for service in serviceTypes %}
-                        <tr>
-                          <form action="" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="add_service">
-                            <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
-                            <input type="text" value="{{ service.id }}" name="service_id" hidden required>
-
-                            <strong>{{ service.type }} for ${{ service.price }}</strong><br />
-                            <input type="datetime-local" name="service_date_time" required min="{{ reservation.checkin|date:'Y-m-d' }}T12:00" max="{{ reservation.checkout|date:'Y-m-d' }}T11:59">
-                            &ThinSpace;<button class="btn btn-success">Add</button><br /><br />
-                          </form>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                </table>
-                
-              </div>
               </div>
               
-              <div class="modal-footer">
-                <form action="" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="delete_reservation" />
-                  <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
-                  <button type="submit" class="btn btn-danger">Cancel Reservation</button>
-                </form>
-              </div>
+            
+            <!-- Detail modal start -->
+              <div
+              class="modal fade w-100"
+              id="detailModal{{ reservation.id }}"
+              tabindex="-1"
+              aria-labelledby="detailModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailModalLabel">Reservation Details</h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
 
+                  <div class="modal-body">
+                    <p><strong>Reservation ID: </strong>{{ reservation.id }}</p>
+                    <p><strong>Customer Name: </strong>{{ reservation.user.username }}</p>
+                    <p><strong>Check-in Date: </strong>{{ reservation.checkin }}</p>
+                    <p><strong>Check-out Date: </strong>{{ reservation.checkout }}</p>
+                    <p><strong>Room Number: </strong>{{ reservation.room.room_number }}</p>
+                    <p><strong>Room Type: </strong>{{ reservation.room.category }}</p>
+                    <p><strong>Room Price: </strong>${{ reservation.room.price_per_night }} / Night</p>
+                    <p><strong>Duration: </strong>{{ reservation.duration }} days</p>
+                    <!-- <p><strong>Number of Guests: </strong> 2</p> -->
+                    {% for date in serviceDates %}
+                      {% if date.extra_service.reservation.id == reservation.id %}
+                    
+                        <p><strong>{{ date.extra_service.service.type }} on {{ date.service_date_time }}: </strong>${{ date.extra_service.service.price }}</p>
+                        
+                      {% endif %}
+                    {% endfor %}
+
+                    
+                    <p><strong>Total Cost: </strong>{{ reservation.total_price }}</p>
+                    <!-- <p><strong>Special Requests: </strong> Non-smoking room</p> -->
+                    
+                    
+                    <hr />
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampletop" aria-expanded="false" aria-controls="collapseExampletop">
+                      Extra Services
+                    </button>
+
+                    <div class="collapse mt-3" id="collapseExampletop">
+                    <table class="table">
+                      <tbody>
+                        {% for service in serviceTypes %}
+                          <tr>
+                            <form action="" method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="add_service">
+                              <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
+                              <input type="text" value="{{ service.id }}" name="service_id" hidden required>
+
+                              <strong>{{ service.type }} for ${{ service.price }}</strong><br />
+                              <input type="datetime-local" name="service_date_time" required min="{{ reservation.checkin|date:'Y-m-d' }}T12:00" max="{{ reservation.checkout|date:'Y-m-d' }}T11:59">
+                              &ThinSpace;<button class="btn btn-success">Add</button><br /><br />
+                            </form>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+                  
+                </div>
+                </div>
+                
+                <div class="modal-footer">
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_reservation" />
+                    <input type="text" value="{{ reservation.id }}" name="reservation_id" hidden required>
+                    <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                  </form>
+                </div>
+
+                </div>
               </div>
-            </div>
-            </div>
-          <!-- Detail modal end -->
+              </div>
+            <!-- Detail modal end -->
 
 
             </div>

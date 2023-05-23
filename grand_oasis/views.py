@@ -4,7 +4,7 @@ from .models import *
 from .forms import *
 from django.db.models import Sum
 from datetime import date, datetime
-
+today = date.today()
 
 def index(request):
     context = {
@@ -82,10 +82,28 @@ def myBookings(request):
             reservation.save()
             # print(reservation.total_price + service.price)
 
-        elif 'delete_service' in request.POST:
-            print("delete service")
+        elif 'renew_reservation' in request.POST:
+            print("renew_reservation")
+
+            new_checkout = datetime.strptime(request.POST['new_checkout'], '%Y-%m-%d').date()
+
+            current_reservation = Reservation.objects.get(id=request.POST['reservation_id'])
+            
+            prev_duration = (current_reservation.checkout - current_reservation.checkin).days
+            new_duration = (new_checkout - current_reservation.checkin).days
+
+            current_reservation.checkout = new_checkout
+
+            current_reservation.total_price = current_reservation.total_price - (prev_duration*current_reservation.room.price_per_night)
+            current_reservation.total_price = current_reservation.total_price + (new_duration*current_reservation.room.price_per_night)
+            # current_reservation.duration = new_duration
+
+            print(request.POST['new_checkout'])
+            print(current_reservation.checkout)
+            current_reservation.save()
+
+            message = "Checkout updated successfully"
         elif 'delete_reservation' in request.POST:
-            print("delete reservation")
             reservation = Reservation.objects.get(id=request.POST['reservation_id'])
             reservation.delete()
             message = f"Your reservation for {reservation.room.room_number} {reservation.room.category} has been cancelled"
@@ -100,6 +118,7 @@ def myBookings(request):
         'form': DateForm(),
         "message": message,
         "messages": Contact.objects.all(),
+        "today": today,
     }
     return render(request, 'my-bookings.html', context)
 
@@ -113,7 +132,7 @@ def login_view(request):
             login(request, user)
             if (user.is_staff):
                 return redirect('admin')
-            return redirect('rooms')
+            return redirect('myBookings')
         else:
             error_message = 'Invalid username or password'
             return render(request, 'login.html', {'error_message': error_message})
@@ -122,11 +141,11 @@ def login_view(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
+        new_user = User.objects.create(username=request.POST['username'], email=request.POST['email'])
+        new_user.set_password(request.POST['password'])
+        new_user.save()
 
-            return redirect('login')
+        return redirect('login')
 
     else:
         form = UserForm()
@@ -170,8 +189,33 @@ def admin(request):
             current_user.save()
 
             message = "User updated successfully"
+        elif 'make_reservation' in request.POST:
+            form = ReservationForm(request.POST)
+            if form.is_valid():
+                # set the room being booked to unavailable
+                roomID = request.POST['room']
+                currentRoom = Room.objects.get(id=roomID)
+                currentRoom.is_available = False
 
-    today = date.today()
+                # save reservation
+                form.save()
+
+                # update the room
+                currentRoom.save()
+                message = f"Room {currentRoom.room_number} {currentRoom.category} has been booked"
+                # return redirect('rooms')
+            else:
+                print(form.errors)
+
+            message = "Room booked successfully"
+        elif 'add_user' in request.POST:
+            is_staff = True if request.POST['user_type'] == 'admin' else False
+            new_user = User.objects.create(username=request.POST['username'], email=request.POST['email'], is_staff=is_staff)
+            new_user.set_password(request.POST['password'])
+            new_user.save()
+
+            message = "User Created successfully"
+
     # print(Reservation.objects.filter(date_booked=today)
     start_of_day = datetime.combine(today, datetime.min.time())
     end_of_day = datetime.combine(today, datetime.max.time())
@@ -206,6 +250,7 @@ def admin(request):
         'bookings_today': len(bookings_today),
         'total_clients': len(total_clients),
         'total_rooms': len(total_rooms),
+        "rooms": Room.objects.all()
     }
     return render(request, 'admin.html', context)
 
