@@ -393,7 +393,7 @@
                         <div class=" bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <h6 class="mb-0">Registered Users</h6>
-                                <button class="btn btn-warning text-white">Add User</button>
+                                <button class="btn btn-success text-white">Add User</button>
                             </div>
                             {% for user in users %}
                                 {% if not user.id == request.user.id %}
@@ -411,7 +411,7 @@
                                         </div>
                                         <div class="row flex-direction-row"></div>
                                        
-                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#updateUserModal{{ user.id }}" class="btn-sm btn-success text-white">Update</button>
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#updateUserModal{{ user.id }}" class="btn-sm btn-warning text-white">Update</button>
                                         
                                         <button type="submit" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ user.id }}" class="btn-sm btn-danger text-white">Delete</button>
                                     </div>
@@ -428,7 +428,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="updateUserModalLabel">
-                                        {{ user.username }}
+                                        Update User
                                     </h1>
                                     <button
                                         type="button"
@@ -439,11 +439,26 @@
                                     </div>
     
                                     <div class="modal-body">
-    
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="update_user">
+                                            <input type="hidden" value="{{ user.id }}" name="user_id">
+                                            <div>
+                                                <label for="username"><strong>Username</strong></label><br />
+                                                <input id="username" type="text" value="{{ user.username }}" name="username">
+                                            </div><br />
+
+                                            <div>
+                                                <label for="email"><strong>Email</strong></label><br />
+                                                <input id="email" type="email" value="{{ user.email }}" name="email">
+                                            </div><br />
+
+                                            <button type="submit" class="btn btn-warning text-white">Update</button>
+                                        </form>
                                     </div>
     
                                 </div>
-                    </div>
+                                </div>
                                 </div>
     
                                 <div

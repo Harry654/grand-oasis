@@ -158,6 +158,13 @@ def admin(request):
             current_user = User.objects.get(id=request.POST['user_id'])
             current_user.delete()
             message = "User deleted successfully"
+        if 'update_user' in request.POST:
+            current_user = User.objects.get(id=request.POST['user_id'])
+            current_user.username = request.POST['username']
+            current_user.email = request.POST['email']
+            current_user.save()
+            
+            message = "User updated successfully"
 
     today = date.today()
     # print(Reservation.objects.filter(date_booked=today)
