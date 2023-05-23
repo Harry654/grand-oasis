@@ -15,7 +15,7 @@ class Room(models.Model):
         return f"{self.room_number} {self.category}"
     
 class Reservation(models.Model):
-    user= models.ForeignKey(User, null=True, on_delete= models.SET_NULL)
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
     room= models.ForeignKey(Room, on_delete=models.CASCADE)
     date_booked = models.DateTimeField(auto_now_add=True)
     checkin = models.DateField()
@@ -57,7 +57,7 @@ class ServiceDate(models.Model):
         return f"{self.extra_service} scheduled for {self.service_date_time}"
     
 class Contact(models.Model):
-    msg_sender= models.ForeignKey(User, null=True, on_delete= models.SET_NULL, related_name="msg_sender")
+    msg_sender= models.ForeignKey(User, on_delete=models.CASCADE, related_name="msg_sender")
     msg_receiver= models.ForeignKey(User, on_delete=models.CASCADE, related_name="msg_receiver")
     subject = models.CharField(max_length=200)
     message = models.CharField(max_length=500)

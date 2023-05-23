@@ -334,6 +334,26 @@
       </div>
     </div>
       <!-- Bookings End -->
+
+
+      <!-- Messages Start -->
+      <div class="container">
+      <h2>Your messages</h2>
+        {% for message in messages %}
+          {% if message.msg_receiver.id == request.user.id %}
+            <div class="d-flex align-items-center border-bottom py-3">
+              <img class="rounded-circle align-self-start flex-shrink-0" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
+              <div class="w-100 ms-3">
+                  <h6 class="mb-0">Admin</h6>
+                  <small>{{ message.date_sent }}</small>
+                  <p><strong>{{ message.subject }}</strong></p>
+                  <p><strong>{{ message.message }}</strong></p>
+              </div>
+            </div>
+          {% endif %}  
+        {% endfor %}
+      </div>
+      <!-- Messages End -->
       
 
       <!-- Message Modal Start -->

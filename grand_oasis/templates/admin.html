@@ -39,11 +39,11 @@
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-        </div>
+        </div> -->
         <!-- Spinner End -->
 
 
@@ -59,7 +59,7 @@
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">Jhon Doe</h6>
+                        <h6 class="mb-0">{{ request.user.username }}</h6>
                         <span>Admin</span>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                            <span class="d-none d-lg-inline-flex">{{ request.user.username }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
@@ -192,8 +192,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Sales Today</p>
+                                <h6 class="mb-0">${{ total_price_today }}.00</h6>
                             </div>
                         </div>
                     </div>
@@ -201,26 +201,26 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Bookings Today</p>
+                                <h6 class="mb-0">{{ bookings_today }}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <i class="fa fa-user fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Total Clients</p>
+                                <h6 class="mb-0">{{ total_clients }}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <i class="fa fa-hotel fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Total Rooms</p>
+                                <h6 class="mb-0">{{ total_rooms }}</h6>
                             </div>
                         </div>
                     </div>
@@ -236,7 +236,7 @@
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Recent Reservations</h6>
-                        <button class="btn btn-warning text-white">Add New</button>
+                        <a href="#available-rooms" class="btn btn-warning text-white">Add New</a>
                     </div>
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -247,6 +247,7 @@
                                     <th scope="col">Check-in</th>
                                     <th scope="col">Check-out</th>
                                     <th scope="col">Duration</th>
+                                    <th scope="col">Date Booked</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -259,44 +260,48 @@
                                         <td>{{ reservation.checkin }}</td>
                                         <td>{{ reservation.checkout }}</td>
                                         <td>{{ reservation.duration }} days</td>
+                                        <td>{{ reservation.date_booked }}</td>
                                         <td>${{ reservation.total_price }}</td>
                                         <td>
                                             
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewReservationModal{{ reservation.id }}">
-                                                   Cancel
-                                                </button>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewReservationModal{{ reservation.id }}">
+                                                Cancel
+                                            </button>
                                         </td>
                                     </tr>
 
                                     <!-- Button trigger modal -->
 
   
-  <!-- Modal -->
-  <div class="modal fade" id="viewReservationModal{{ reservation.id }}" tabindex="-1" role="dialog" aria-labelledby="viewReservationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewReservationModalLabel">Cancel Reservation</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Reservation of {{ reservation.room.room_number }} {{ reservation.room.category }} by {{ reservation.user.username }}
-        </div>
-        <div class="modal-footer">
-          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="viewReservationModal{{ reservation.id }}" tabindex="-1" role="dialog" aria-labelledby="viewReservationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="viewReservationModalLabel">Cancel Reservation</h5>
+                                <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                                ></button>
+                                </div>
+                                <div class="modal-body">
+                                Reservation of {{ reservation.room.room_number }} {{ reservation.room.category }} by {{ reservation.user.username }}
+                                </div>
+                                <div class="modal-footer">
+                                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
 
-          <form action="" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="delete_reservation">
-            <input type="hidden" value="{{ reservation.id }}" name="reservation_id">
-            <button type="submit" class="btn btn-danger">Confirm</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_reservation">
+                                    <input type="hidden" value="{{ reservation.id }}" name="reservation_id">
+                                    <button type="submit" class="btn btn-danger">Confirm</button>
+                                </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
 
                                 {% endfor %}
                             </tbody>
@@ -308,7 +313,7 @@
 
 
             <!-- Widgets Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid py-5 px-4">
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-md-6 col-xl-4">
@@ -317,49 +322,466 @@
                                 <h6 class="mb-0">Messages</h6>
                                 <a href="">Show All</a>
                             </div>
-                            <div class="d-flex align-items-center border-bottom py-3">
-                                <img class="rounded-circle flex-shrink-0" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                            {% for message in messages %}
+                                {% if message.msg_receiver.is_staff %}
+                                    <div class="d-flex align-items-center border-bottom py-3">
+                                        <img class="rounded-circle align-self-start flex-shrink-0" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
+                                        <div class="w-100 ms-3">
+                                            <h6 class="mb-0">{{ message.msg_sender }}</h6>
+                                            <small>{{ message.date_sent }}</small>
+                                            <p><strong>{{ message.subject }}</strong></p>
+                                            <button
+                                                id="reply"
+                                                class="btn btn-sm btn-dark rounded py-2 px-4"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#messageModal{{ message.id }}"
+                                            >
+                                                
+                                                Reply
+                                            </button>
+                                        </div>
                                     </div>
-                                    <span>Short message goes here...</span>
-                                </div>
-                            </div>
+
+                                    <div class="modal fade" id="messageModal{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="messageModalLabel">Re: {{ message.subject }}</h5>
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                                ></button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <p>sender: <strong>{{ message.msg_sender.username }}</strong></p>
+                                            <p>Subject: <strong>{{ message.subject }}</strong></p>
+                                            <p>Date Sent: <strong>{{ message.date_sent }}</strong></p>
+                                            <hr />
+                                            <!-- <p><strong></strong></p> -->
+                                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                            
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="reply_message">
+                                                <input type="hidden" value="1" name="msg_sender">
+                                                <input type="hidden" value="{{ message.msg_sender.id }}" name="msg_receiver">
+                                                <input type="hidden" value="Re: {{ message.subject }}" name="subject">
+                                                <textarea
+                                                class="form-control"
+                                                placeholder="Reply message here"
+                                                id="message"
+                                                style="height: 150px"
+                                                required
+                                                name="message"
+                                                ></textarea><br />
+                                                <button type="submit" class="btn btn-danger">Send</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
 
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <div class="h-100 bg-light rounded p-4">
+                        <div class=" bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <h6 class="mb-0">Messages</h6>
-                                <a href="">Show All</a>
+                                <h6 class="mb-0">Registered Users</h6>
+                                <button class="btn btn-warning text-white">Add User</button>
                             </div>
-                            <div class="d-flex align-items-center border-bottom py-3">
-                                <img class="rounded-circle flex-shrink-0" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                            {% for user in users %}
+                                {% if not user.id == request.user.id %}
+                                <div class="d-flex border-bottom py-3">
+                                    <img class="rounded-circle flex-shrink-0" src="{% static 'admin/img/user.jpg' %}" alt="" style="width: 40px; height: 40px;">
+                                    <div class="w-100 ms-3">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <div>
+                                                <h6 class="mb-0">{{ user.username }}</h6>
+                                            <p class="mb-0">{{ user.email }}</p>
+                                            </div>
+                                            {% if user.is_staff %}
+                                            <small>Admin</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="row flex-direction-row"></div>
+                                       
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#updateUserModal{{ user.id }}" class="btn-sm btn-success text-white">Update</button>
+                                        
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ user.id }}" class="btn-sm btn-danger text-white">Delete</button>
                                     </div>
-                                    <span>Short message goes here...</span>
                                 </div>
-                            </div>
+    
+                                <div
+                                class="modal fade w-100"
+                                id="updateUserModal{{ user.id }}"
+                                tabindex="-1"
+                                aria-labelledby="updateUserModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="updateUserModalLabel">
+                                        {{ user.username }}
+                                    </h1>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    ></button>
+                                    </div>
+    
+                                    <div class="modal-body">
+    
+                                    </div>
+    
+                                </div>
+                    </div>
+                                </div>
+    
+                                <div
+                                class="modal fade w-100"
+                                id="deleteUserModal{{ user.id }}"
+                                tabindex="-1"
+                                aria-labelledby="deleteUserModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteUserModalLabel">
+                                        Action is irreversible
+                                    </h1>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    ></button>
+                                    </div>
+    
+                                    <div class="modal-body">
+                                        <p><strong>Are sure you want to delete {{ user.username }}'s account?</strong></p>
+                                    </div>
+    
+                                    <div class="modal-footer">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="delete_user">
+                                            <input type="hidden" value="{{ user.id }}" name="user_id">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+    
+                                </div>
+                                </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
 
                 </div>
             </div>
             <!-- Widgets End -->
+            <hr />
+             <!-- Floor Start -->
+      <div class="container-xxl py-5">
+        <div class="container">
+          <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-5" id="available-rooms">
+              Available <span class="text-primary text-uppercase">Rooms</span>
+            </h1>
+          </div>
 
+          <div class="accordion" id="accordionExample{{ forloop.counter }}">
+          {% for floor in floors %}
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-controls="collapseOne{{ forloop.counter }}">
+                  <h5>Floor {{ forloop.counter }}</h5>
+                </button>
+              </h2>
+              <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample{{ forloop.counter }}">
+                <div class="accordion-body">
+                
+            <!-- Room Start -->
+            <div class="row g-4 mb-5">
+              {% for room in floor %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="room-item shadow rounded overflow-hidden">
+                  <div class="position-relative">
+                      {% if room.category == 'Junior Suite' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-1.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+
+                      {% if room.category == 'Executive Suite' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-2.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+
+                      {% if room.category == 'Super Deluxe' %} 
+                        <img
+                        class="img-fluid"
+                        src="{% static 'img/room-3.jpg' %}"
+                        alt=""
+                        />
+                      {% endif %}
+                    <small
+                      class="position-absolute start-0 top-100 translate-middle-y bg-primary text-white rounded py-1 px-3 ms-4"
+                      >${{ room.price_per_night }}/Night</small
+                    >
+                    <small
+                      class="position-absolute end-0 top-100 translate-middle-y bg-success text-white rounded py-1 px-3 me-4"
+                      >{{ room.room_number }}</small
+                    >
+                  </div>
+                  <div class="p-4 mt-2">
+                    <div class="d-flex justify-content-between mb-3">
+                      <h5 class="mb-0">{{ room.category }}</h5>
+                      <div class="ps-2">
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                        <small class="fa fa-star text-primary"></small>
+                      </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                      <small class="border-end me-3 pe-3"
+                        ><i class="fa fa-bed text-primary me-2"></i>3 Bed</small
+                      >
+                      <small class="border-end me-3 pe-3"
+                        ><i class="fa fa-bath text-primary me-2"></i>2 Bath</small
+                      >
+                      <small
+                        ><i class="fa fa-wifi text-primary me-2"></i>Wifi</small
+                      >
+                    </div>
+                    <p class="text-body mb-3">
+                      {{ room.description }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                      <!-- {% if room.category == 'Junior Suite' %} 
+                      {% endif %} -->
+                      <a class="btn btn-sm btn-primary rounded py-2 px-4" 
+                        href=""
+                        data-bs-toggle="modal"
+                        data-bs-target="#detailModal{{ room.id }}"
+                        >View Detail</a
+                      >
+                      {% if user.is_authenticated %} 
+                      <button
+                        id="book_now_btn"
+                        class="btn btn-sm btn-dark rounded py-2 px-4"
+                        onclick="setRoom()"
+                        room_id="{{room.id}}"
+                        price_per_night="{{room.price_per_night}}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#bookRoomModal{{ room.id }}"
+                        {% if not room.is_available %} disabled {% endif %}
+                      >
+                        
+                        {% if room.is_available %} Book Now {% endif %}
+                        {% if not room.is_available %} unavailable {% endif %}
+                    </button>
+                      {% else %}
+                      <a
+                        class="btn btn-sm btn-dark rounded py-2 px-4"
+                        href="/login"
+                        {% if not room.is_available %} disabled {% endif %}
+                      >
+                        
+                        {% if room.is_available %} Book Now {% endif %}
+                        {% if not room.is_available %} unavailable {% endif %}
+                    </a>
+                      {% endif %}
+                      
+
+                    </div>
+                  </div>
+                </div>
+              
+
+              <!-- Booking modal start -->
+              <div
+              class="modal fade w-100"
+              id="bookRoomModal{{ room.id }}"
+              tabindex="-1"
+              aria-labelledby="bookRoomModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="bookRoomModalLabel">Book Room</h1>
+                    <button
+                    type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  
+                  <form id="myForm{{ room.id }}" action="" method="POST">
+                    {% csrf_token %}
+                  <div class="modal-body">
+                    <p id="room_number">Room Number: {{ room.room_number }}</p>
+                    <p id="room_type">Room Type: {{ room.category }}</p>
+                    
+                      <select name="user" required hidden>
+                        {% for userOption in users %}
+                          <option 
+                            value="{{ userOption.id }}" 
+                            {% if userOption.id == user.id %} selected {% endif %}
+                          ></option>
+                        {% endfor %}
+                      </select>
+
+                      <select name="room" required hidden>
+                        {% for roomOption in rooms %}
+                          <option 
+                            value="{{ roomOption.id }}" 
+                            {% if roomOption.id == room.id %} selected {% endif %}
+                          ></option>
+                        {% endfor %}
+                      </select>
+                      
+                      <label for="checkin">Check In: 
+                        <input name="checkin" id="checkin" class="checkin" type="date" required />
+                      </label><br />
+        
+                      <label for="checkout">Check Out: 
+                        <input name="checkout" id="checkout" class="checkout" type="date" required />
+                      </label>
+        
+                      <p id="duration{{ room.id }}" class="duration">Duration: 0 days</p>
+                      <p id="amount{{ room.id }}" class="amount">Amount: $0</p>
+                      
+                  </div>
+                  
+                  
+                  
+                  <div class="modal-footer">
+                    <button class="btn btn-primary">Book Room</button>
+                  </div>
+                </form>
+
+                </div>
+              </div>
+              </div>
+              <!-- Booking modal end -->
+
+              <!-- Detail modal start -->
+                <div
+                class="modal fade w-100"
+                id="detailModal{{ room.id }}"
+                tabindex="-1"
+                aria-labelledby="detailModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="detailModalLabel">
+                        {% if room.category == 'Junior Suite' %} Junior Suite {% endif %}
+                        {% if room.category == 'Executive Suite' %} Executive Suite {% endif %}
+                        {% if room.category == 'Super Deluxe' %} Super Deluxe {% endif %}
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <div class="modal-body">
+                      {% if room.category == 'Junior Suite' %}
+                      <img
+                        id="detailsImg"
+                        class="img-fluid"
+                        src="{% static 'img/room-1.jpg' %}"
+                        alt=""
+                      />
+                    <p id="detailsDesc">Step into our comfortable and affordable basic hotel room, designed with your convenience in mind. Unwind in a cozy and inviting atmosphere, complete with a well-appointed en-suite bathroom and a snug bed that guarantees a restful night's sleep. Stay productive with a dedicated workspace, ideal for catching up on work or planning your itinerary. Whether you're a budget-conscious traveler or simply seeking simplicity, our basic hotel room provides all the essentials for a pleasant stay without compromising on comfort.</p>
+                    <p><strong id="detailsPrice">$120 / Night</strong></p>
+                    {% endif %}
+                    
+                    {% if room.category == 'Executive Suite' %}
+                    <img
+                    id="detailsImg"
+                    class="img-fluid"
+                    src="{% static 'img/room-2.jpg' %}"
+                    alt=""
+                    />
+                    <p id="detailsDesc">Indulge in a delightful experience in our standard hotel room, where modern elegance and comfort seamlessly come together. Immerse yourself in the tastefully designed space, featuring stylish décor and thoughtful amenities. Drift into tranquility on the comfortable bed, and refresh in the well-appointed bathroom that offers both functionality and style. Whether you're traveling for business or leisure, our standard room provides the perfect retreat to relax and recharge after a day of exploring. Embrace the balance of comfort, convenience, and affordability in our inviting standard hotel room.</p>
+                    <p><strong id="detailsPrice">$300 / Night</strong></p>
+                    {% endif %}
+                    
+                    {% if room.category == 'Super Deluxe' %}
+                    <img
+                    id="detailsImg"
+                    class="img-fluid"
+                    src="{% static 'img/room-3.jpg' %}"
+                    alt=""
+                    />
+                    <p id="detailsDesc">Experience the epitome of luxury and sophistication in our executive hotel room. From the moment you step inside, you'll be enveloped in an ambiance of elegance and refinement. Indulge in the spaciousness of the room, carefully adorned with upscale furnishings and captivating décor. Sink into the plush king-size bed and revel in its comfort. The upgraded bathroom offers a touch of opulence, featuring premium fixtures and luxurious amenities. As an executive guest, you'll enjoy exclusive access to our executive lounge, where personalized services and complimentary perks await. Whether you're traveling for business or seeking a luxurious retreat, our executive room exceeds expectations, offering an extraordinary stay tailored to the discerning traveler.</p>
+                    <p><strong id="detailsPrice">$500 / Night</strong></p>
+                    
+                      {% endif %}
+                      
+                      {% if not room.is_available %}
+                        {% for reservation in reservations %}
+                          {% if reservation.room.id == room.id %}
+                            <p class="bg-primary text-white p-2 rounded-0">
+                              <i>This room is unavailable from <strong>{{ reservation.checkin }}</strong> to <strong>{{ reservation.checkout }}</strong></i>
+                            </p>
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+
+                    </div>
+
+                  </div>
+                </div>
+                </div>
+              <!-- Detail modal end -->
+
+
+                </div>
+              {% endfor %}
+            </div>
+            <!-- Room End -->
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+        </div>
+      </div>
+      <!-- Floor End -->
 
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="#">Grand Oasis</a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
