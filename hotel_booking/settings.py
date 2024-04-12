@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-iytb-o@r9&c=lzvh-530w-8o3$p*@2+@_-ibzx(d@idst-b83@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://grand-oasis.vercel.app/']
 
 
 # Application definition
